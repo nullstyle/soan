@@ -5,11 +5,13 @@ module Soan
     autoload :Service,          "soan/client/service"
     autoload :ResponseListener, "soan/client/response_listener"
     autoload :IdGenerator,      "soan/client/id_generator"
+    autoload :ResponseTicket,   "soan/client/response_ticket"
 
     def initialize(identity, bind_address)
       @services          = {}
       @response_listener = ResponseListener.new(identity, bind_address, self.current_actor)
       @id_generator      = IdGenerator.new
+      @response_tickets  = {}
 
       @response_listener.link self.current_actor 
       @response_listener.async.run
@@ -32,11 +34,13 @@ module Soan
 
       service.async.req request
 
+      @response_tickets[request.id] = ResponseTicket.new
     end
 
     def response_received(response)
-      # look up request
-      # if found, signal the value
+      ticket = @response_tickets[response.id]
+      return unless ticket
+      ticket.resolve response
     end
 
 
