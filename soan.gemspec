@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = Soan::VERSION
   spec.authors       = ["Scott Fleckenstein"]
   spec.email         = ["nullstyle@gmail.com"]
-  spec.description   = %q{Cool stuff}
-  spec.summary       = %q{Even more cool stuff}
-  spec.homepage      = ""
+  spec.description   = %q{HTTP-like framework based upon zeromq and msgpack designed for building internal services}
+  spec.summary       = %q{HTTP-like framework based upon zeromq and msgpack}
+  spec.homepage      = "https://github.com/nullstyle/soan"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
