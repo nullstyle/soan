@@ -3,16 +3,17 @@ module Soan
     include Celluloid
 
     autoload :Service,          "soan/client/service"
-    autoload :ResponseHandler,  "soan/client/response_handler"
+    autoload :ResponseListener, "soan/client/response_listener"
     autoload :IdGenerator,      "soan/client/id_generator"
 
     def initialize(identity, bind_address)
-      @services         = {}
-      @response_handler = ResponseHandler.new(identity, bind_address, self.current_actor)
-      @id_generator     = IdGenerator.new
+      @services          = {}
+      @response_listener = ResponseListener.new(identity, bind_address, self.current_actor)
+      @id_generator      = IdGenerator.new
 
-      @response_handler.link self.current_actor 
-      @response_handler.async.run
+      @response_listener.link self.current_actor 
+      @response_listener.async.run
+
     end
 
     def register_service(name)
@@ -27,9 +28,10 @@ module Soan
       service = find_service(uri)
       id      = @id_generator.get
       request = Request.new(id, method, uri.path, body, headers)
-      request.respond_to = @response_handler
+      request.respond_to = @response_listener
 
-      service.async.req request      
+      service.async.req request
+
     end
 
     def response_received(response)

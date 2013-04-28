@@ -11,8 +11,8 @@ module Soan
       @headers = headers
     end
 
-    def respond_to=(response_handler)
-      @headers[:respond_to] = response_handler.bind_address
+    def respond_to=(response_listener)
+      @headers[:respond_to] = response_listener.bind_address
     end
 
     def respond_to

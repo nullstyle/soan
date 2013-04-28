@@ -1,12 +1,12 @@
 module Soan
-  class Client::ResponseHandler
+  class Client::ResponseListener
     include Celluloid::ZMQ
 
     attr_reader :bind_address
 
     def initialize(identity, bind_address, upstream)
       @socket          = PullSocket.new
-      @socket.identity = "soan-response_handler-#{identity}"
+      @socket.identity = "soan-response_listener-#{identity}"
       @bind_address    = bind_address
       @upstream        = upstream
       bind
